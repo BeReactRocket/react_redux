@@ -1,4 +1,5 @@
-import { createAction, createActions, handleActions } from 'redux-actions';
+import { createAction, handleActions } from 'redux-actions';
+import produce from 'immer';
 
 const CHANGE_INPUT = 'todos/CHANGE_INPUT';
 const INSERT = 'todos/INSERT';
@@ -42,12 +43,11 @@ const reducer = handleActions(
       ...state,
       todos: [...state.todos, action.payload],
     }),
-    [TOGGLE]: (state, action) => ({
-      ...state,
-      todos: state.todos.map((todo) =>
-        todo.id === action.payload ? { ...todo, done: !todo.done } : todo,
-      ),
-    }),
+    [TOGGLE]: (state, { payload: id }) =>
+      produce(state, (draft) => {
+        const target = draft.todos.find((todo) => todo.id === id);
+        target.done = !target.done;
+      }),
     [REMOVE]: (state, action) => ({
       ...state,
       todos: state.todos.filter((todo) => todo.id !== action.payload),
