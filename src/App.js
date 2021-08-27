@@ -1,4 +1,3 @@
-import './App.css';
 import CounterContainer from './containers/CounterContainer';
 import TodosContainer from './containers/TodosContainer';
 

@@ -1,26 +1,21 @@
+import { createAction, handleActions } from 'redux-actions';
+
 const INCREASE = 'counter/increase';
 const DECREASE = 'counter/decrease';
 
-export const increase = () => ({ type: INCREASE });
-export const decrease = () => ({ type: DECREASE });
+export const increase = createAction(INCREASE);
+export const decrease = createAction(DECREASE);
 
 const initialState = {
   number: 0,
 };
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case INCREASE:
-      return {
-        number: state.number + 1,
-      };
-    case DECREASE:
-      return {
-        number: state.number - 1,
-      };
-    default:
-      return state;
-  }
-};
+const reducer = handleActions(
+  {
+    [INCREASE]: (state) => ({ number: state.number + 1 }),
+    [DECREASE]: (state) => ({ number: state.number - 1 }),
+  },
+  initialState,
+);
 
 export default reducer;
